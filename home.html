@@ -2,103 +2,210 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Zyrix Groups - Home</title>
   <link rel="icon" href="logo.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400&display=swap"
+    rel="stylesheet"
+  />
   <script src="https://cdn.tailwindcss.com"></script>
-
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
-      color: #333;
       margin: 0;
-      padding: 0;
+      background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: #333;
     }
-
     .orbitron {
       font-family: 'Orbitron', sans-serif;
       color: #222;
     }
 
-    .glass {
-      background: rgba(255, 255, 255, 0.85);
-      border-radius: 1rem;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-      padding: 2rem;
+    /* Navbar */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 2rem;
+      z-index: 1000;
     }
-
-    .btn {
-      background-color: #3b82f6;
+    nav .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      cursor: default;
+    }
+    nav button {
+      background-color: #ef4444;
       color: white;
-      font-weight: 600;
-      padding: 0.75rem 1rem;
-      border-radius: 0.5rem;
       border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    nav button:hover {
+      background-color: #b91c1c;
     }
 
-    .btn:hover {
-      background-color: #2563eb;
+    main {
+      margin-top: 72px; /* navbar height + margin */
+      flex-grow: 1;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .welcome-card {
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 1rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+    }
+    .welcome-card h1 {
+      font-size: 2.25rem;
+      margin-bottom: 0.5rem;
+    }
+    .welcome-card p {
+      font-size: 1.125rem;
+      color: #555;
+    }
+
+    /* Dashboard Card */
+    .dashboard-card {
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 1rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      max-width: 480px;
+      width: 100%;
+    }
+    .dashboard-card h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #222;
+    }
+    .dashboard-card ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      color: #444;
+    }
+    .dashboard-card li {
+      background: #f9fafb;
+      margin-bottom: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      box-shadow: inset 0 0 3px rgba(0,0,0,0.05);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 1rem 2rem;
+      background: rgba(255, 255, 255, 0.95);
+      font-size: 0.9rem;
+      color: #666;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.05);
+    }
+
+    @media (max-width: 640px) {
+      main {
+        flex-direction: column;
+        align-items: center;
+      }
+      .welcome-card, .dashboard-card {
+        max-width: 100%;
+      }
     }
   </style>
 </head>
 <body>
+  <nav>
+    <div class="logo orbitron">Zyrix Groups</div>
+    <button id="logoutBtn">Sign Out</button>
+  </nav>
 
-<!-- Navbar -->
-<nav class="flex items-center justify-between px-6 py-4 bg-white shadow-md">
-  <div class="text-2xl orbitron">Zyrix Groups</div>
-  <button id="logoutBtn" class="btn text-sm">Logout</button>
-</nav>
+  <main>
+    <section class="welcome-card">
+      <h1 id="welcomeHeading">Welcome!</h1>
+      <p id="welcomeMessage">You are successfully logged in.</p>
+    </section>
 
-<!-- Main Content -->
-<main class="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] px-6 text-center">
-  <div class="glass max-w-xl w-full">
-    <h1 class="text-4xl orbitron mb-4">Welcome to Zyrix Groups!</h1>
-    <p class="mb-6 text-gray-600">Explore our services, collaborate with your team, and manage your projects effortlessly.</p>
+    <section class="dashboard-card">
+      <h2>Dashboard</h2>
+      <ul>
+        <li>Your profile settings</li>
+        <li>Account activity</li>
+        <li>Latest news & updates</li>
+        <li>Support & FAQ</li>
+      </ul>
+    </section>
+  </main>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <a href="#" class="btn">Dashboard</a>
-      <a href="#" class="btn">Projects</a>
-      <a href="#" class="btn">Teams</a>
-      <a href="#" class="btn">Support</a>
-    </div>
-  </div>
-</main>
+  <footer>
+    &copy; 2025 Zyrix Groups. All rights reserved.
+  </footer>
 
-<!-- Firebase & Logout Script -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyCU3RPOglyqFhJCB6RWYI3NhqMtlRnjPbY",
-    authDomain: "lottanodes-a2fed.firebaseapp.com",
-    projectId: "lottanodes-a2fed",
-    storageBucket: "lottanodes-a2fed.firebaseapp.com",
-    messagingSenderId: "192513042444",
-    appId: "1:192513042444:web:beed2715dc38f6c7f4a629",
-    measurementId: "G-X5TYLLDHG5"
-  };
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script>
+    // Firebase Config (use same as login page)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCU3RPOglyqFhJCB6RWYI3NhqMtlRnjPbY",
+      authDomain: "lottanodes-a2fed.firebaseapp.com",
+      projectId: "lottanodes-a2fed",
+      storageBucket: "lottanodes-a2fed.firebasestorage.app",
+      messagingSenderId: "192513042444",
+      appId: "1:192513042444:web:beed2715dc38f6c7f4a629",
+      measurementId: "G-X5TYLLDHG5"
+    };
 
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
 
-  // Logout button
-  document.getElementById('logoutBtn').addEventListener('click', () => {
-    auth.signOut().then(() => {
-      window.location.href = 'index.html'; // back to login
+    const logoutBtn = document.getElementById("logoutBtn");
+    const welcomeHeading = document.getElementById("welcomeHeading");
+    const welcomeMessage = document.getElementById("welcomeMessage");
+
+    // Redirect if not logged in, else personalize message
+    auth.onAuthStateChanged(user => {
+      if (!user) {
+        window.location.href = "index.html"; // Update with your login filename
+      } else {
+        welcomeHeading.textContent = `Welcome, ${user.displayName}!`;
+        welcomeMessage.textContent = "You are successfully logged in.";
+      }
     });
-  });
 
-  // Protect route
-  auth.onAuthStateChanged(user => {
-    if (!user) {
-      window.location.href = 'index.html'; // not logged in
-    }
-  });
-</script>
-
+    logoutBtn.addEventListener("click", () => {
+      auth.signOut()
+        .then(() => {
+          window.location.href = "index.html"; // back to login
+        })
+        .catch(error => {
+          alert("Error signing out: " + error.message);
+        });
+    });
+  </script>
 </body>
 </html>
