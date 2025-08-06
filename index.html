@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Zyrix Groups - Login</title>
+  <link rel="icon" href="logo.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+      overflow: hidden;
+      color: #333;
+    }
+
+    .orbitron {
+      font-family: 'Orbitron', sans-serif;
+      color: #222;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 1rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      padding: 2.5rem;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 6px;
+      background: #3b82f6;
+      border-radius: 9999px;
+      animation: load 2.5s forwards;
+    }
+
+    @keyframes load {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+
+    #loginPage {
+      display: none;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn {
+      background-color: #3b82f6;
+      color: white;
+      font-weight: 600;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      border: none;
+      width: 100%;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      user-select: none;
+    }
+
+    .btn:hover {
+      background-color: #2563eb;
+    }
+
+    #userInfo {
+      margin-top: 1.5rem;
+      font-weight: 600;
+      color: #2563eb;
+    }
+
+    #errorMessage {
+      margin-top: 1rem;
+      background-color: #fee2e2;
+      color: #b91c1c;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- Loading Screen -->
+<div id="loadingScreen" class="h-screen w-screen flex flex-col items-center justify-center text-gray-700 bg-white">
+  <h1 class="text-4xl orbitron mb-6">Zyrix Groups</h1>
+  <div class="w-2/3 bg-gray-300 rounded-full overflow-hidden">
+    <div class="progress-bar"></div>
+  </div>
+</div>
+
+<!-- Login Page -->
+<div id="loginPage">
+  <div class="glass">
+    <h2 class="text-3xl orbitron mb-4">Welcome to Zyrix</h2>
+    <p class="mb-6 text-gray-600">Sign in with your Google account</p>
+
+    <button id="googleBtn" class="btn">
+      Continue with Google
+    </button>
+
+    <div id="userInfo" class="hidden">
+      <p>Signed in as <span id="userName"></span></p>
+    </div>
+
+    <div id="errorMessage" class="hidden">
+      <p id="errorText"></p>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase Auth Script -->
+<script>
+  // Firebase Config
+  const firebaseConfig = {
+    apiKey: "AIzaSyCU3RPOglyqFhJCB6RWYI3NhqMtlRnjPbY",
+    authDomain: "lottanodes-a2fed.firebaseapp.com",
+    projectId: "lottanodes-a2fed",
+    storageBucket: "lottanodes-a2fed.firebasestorage.app",
+    messagingSenderId: "192513042444",
+    appId: "1:192513042444:web:beed2715dc38f6c7f4a629",
+    measurementId: "G-X5TYLLDHG5"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+
+  const loadingScreen = document.getElementById('loadingScreen');
+  const loginPage = document.getElementById('loginPage');
+  const googleBtn = document.getElementById('googleBtn');
+  const userInfo = document.getElementById('userInfo');
+  const userName = document.getElementById('userName');
+  const errorMessage = document.getElementById('errorMessage');
+  const errorText = document.getElementById('errorText');
+
+  // Show login after loading
+  window.onload = () => {
+    setTimeout(() => {
+      loadingScreen.style.display = 'none';
+      loginPage.style.display = 'flex';
+    }, 2500);
+  };
+
+  // Handle Login
+  function handleLogin(user) {
+    if (user) {
+      userName.textContent = user.displayName;
+      userInfo.classList.remove('hidden');
+      googleBtn.classList.add('hidden');
+      errorMessage.classList.add('hidden');
+
+      setTimeout(() => {
+        window.location.href = "home.html";
+      }, 1500);
+    }
+  }
+
+  // Handle Error
+  function handleError(error) {
+    console.error("Sign-in failed:", error);
+    errorText.textContent = `Error: ${error.message}`;
+    errorMessage.classList.remove('hidden');
+  }
+
+  // Sign in with popup
+  googleBtn.addEventListener('click', () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider)
+      .then(result => handleLogin(result.user))
+      .catch(handleError);
+  });
+
+  // Already logged in?
+  auth.onAuthStateChanged(user => {
+    if (user) handleLogin(user);
+  });
+</script>
+
+</body>
+</html>
